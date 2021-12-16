@@ -1,3 +1,4 @@
-./node_modules/
-./database.sqlite
-./config.json
+node_modules/
+database.sqlite
+config.json
+package-lock.json
