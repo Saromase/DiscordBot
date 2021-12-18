@@ -1,9 +1,9 @@
 const {
-	Users,
+	Accounts,
 } = require('../dbObjects');
 
 const {
-	Currency,
+	Account,
 } = require('../collectionInit');
 
 const cron = require('node-cron');
@@ -15,9 +15,9 @@ module.exports = {
 	name: 'ready',
 	once: true,
 	async execute(client) {
-		const storedBalances = await Users.findAll();
+		const storedBalances = await Accounts.findAll();
 		if (storedBalances.length > 0) {
-			storedBalances.forEach(b => Currency.set(b.user_id, b));
+			storedBalances.forEach(b => Account.set(b.target_id, { balance : b.balance }));
 		}
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 

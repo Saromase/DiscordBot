@@ -1,8 +1,8 @@
 const {
-    Collection
- } = require('discord.js');
+	Collection,
+} = require('discord.js');
 
-const Currency = new Collection();
+const Account = new Collection();
 const Commands = new Collection();
 
-module.exports = { Currency, Commands };
+module.exports = { Account, Commands };

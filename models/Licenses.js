@@ -1,9 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
 	return sequelize.define('licenses', {
-		user_id: {
+		target_id: {
 			type: DataTypes.STRING,
 			allowNull : false,
 			primaryKey: true,
+		},
+		target_type : {
+			type: DataTypes.STRING,
+			allowNull : false,
 		},
 		type : {
 			type: DataTypes.STRING,
@@ -23,3 +27,15 @@ module.exports = (sequelize, DataTypes) => {
 		timestamps: false,
 	});
 };
+
+
+/**
+ * | name        | type                                  |
+ * | target_id   | role ou user ou shop                  |
+ * | target_type | Type de la target                     |
+ * | type        | driver / weapon / buziness            |
+ * | subtype     | weapon   -> catégorie (1,2 ,3 )       |
+ * | -           | driver   -> auto, truck               |
+ * | -           | buziness -> drunk, food, registration |
+ * | date        | datetime                              |
+ */

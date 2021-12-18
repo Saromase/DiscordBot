@@ -7,24 +7,28 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const Works = require('./models/Works.js')(sequelize, Sequelize.DataTypes);
-const Users = require('./models/Users.js')(sequelize, Sequelize.DataTypes);
+const Accounts = require('./models/Accounts.js')(sequelize, Sequelize.DataTypes);
+require('./models/Works.js')(sequelize, Sequelize.DataTypes);
 require('./models/Licenses.js')(sequelize, Sequelize.DataTypes);
 require('./models/Shops.js')(sequelize, Sequelize.DataTypes);
+
+const { USER_TYPE } = require('./utils/TargetConstant');
+
+// association
+// UserItems.belongsTo(CurrencyShop, { foreignKey: 'item_id', as: 'item' });
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
 sequelize.sync({ force }).then(async () => {
-	const users = [
-		Users.upsert({ user_id : '117405920392118277', balance : 1000 }),
+	const accounts = [
+		Accounts.upsert({ target_id : '117405920392118277', target_type : USER_TYPE, balance : 1000 }),
 	];
-	const works = [
-		Works.upsert({ role_id : '920015956032503858', name : 'Policier', pay : 100 }),
-		Works.upsert({ role_id : '920016153672306709', name : 'Fermier', pay : 150 }),
-	];
+	// const works = [
+	// 	Works.upsert({ role_id : '920015956032503858', name : 'Policier', pay : 100 }),
+	// 	Works.upsert({ role_id : '920016153672306709', name : 'Fermier', pay : 150 }),
+	// ];
 
-	await Promise.all(works);
-	await Promise.all(users);
+	await Promise.all(accounts);
 
 
 	sequelize.close();

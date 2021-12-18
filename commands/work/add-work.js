@@ -3,48 +3,45 @@ const {
 } = require('@discordjs/builders');
 
 const {
-	Currency,
-} = require('../../collectionInit');
-
-const {
 	Works,
 } = require('../../dbObjects');
+
+const { category } = require('../../config.json');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('add-work')
 		.setDescription('Add new work from roles')
-		.addRoleOption(option => option.setName('role').setDescription('Role of work').setRequired(true))
+		.addStringOption(option => option.setName('name').setDescription('Nom du métier').setRequired(true))
 		.addIntegerOption(option => option.setName('pay').setDescription('Pay every week').setRequired(true)),
 	async execute(interaction) {
-		const role = interaction.options.getRole('role');
+		const name = interaction.options.getString('name');
 		const pay = interaction.options.getInteger('pay');
-		let oldWork = await Works.findAll({
-			where: {
-				role_id: role.id,
-			},
+
+		const guild = interaction.guild;
+
+		const role = await guild.roles.create({
+			name : name,
 		});
-
-
-		let message = '';
-		if (oldWork && oldWork[0]) {
-			oldWork = oldWork[0];
-			message = `Update work "${role.name}" with a pay change from ${oldWork.pay} $ at ${pay} $`;
-			oldWork.pay = pay;
-			oldWork.name = role.name;
-			oldWork.save();
-		}
-		else {
-			message = `Add new work "${role.name}" with a pay at ${pay} $`;
-			await Works.create({
+		const categoryChannel = guild.channels.cache.get(category.work);
+		await guild.channels.create(name, {
+			reason : 'Nouveaux métier ajouté',
+			parent : categoryChannel,
+		}).then((channel) => {
+			console.log(channel.id);
+			const message = `Le ${role} à bien était créer, le channel ${channel} associé aussi.`;
+			Works.create({
 				role_id: role.id,
-				name: role.name,
+				channel_id: channel.id,
 				pay: pay,
 			});
-		}
-		interaction.reply({
-			content: message,
-			ephemeral: true,
+			interaction.reply({
+				content: message,
+				ephemeral: true,
+			});
+		}).catch((error) => {
+			console.error(error);
 		});
+
 	},
 };

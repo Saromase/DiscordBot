@@ -7,7 +7,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 	storage: 'database.sqlite',
 });
 
-const Users = require('./models/Users.js')(sequelize, Sequelize.DataTypes);
+const Accounts = require('./models/Accounts.js')(sequelize, Sequelize.DataTypes);
 
 const Works = require('./models/Works.js')(sequelize, Sequelize.DataTypes);
 
@@ -17,7 +17,7 @@ const Shops = require('./models/Shops.js')(sequelize, Sequelize.DataTypes);
 
 
 module.exports = {
-	Users,
+	Accounts,
 	Works,
 	Licenses,
 	Shops,

@@ -12,9 +12,17 @@ const { Works } = require('../../dbObjects');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('salary')
-		.setDescription('Paye tout les salaires.'),
+		.setDescription('Paye un salaire précisément, ou l\'ensemble des salaires.')
+		.addRoleOption(options => options.setDescription('Role à payer').setName('role')),
 	async execute(interaction) {
-		const works = await Works.findAll();
+		const mentionRole = interaction.options.getRole('role');
+		let works;
+		if (mentionRole) {
+			works = await Works.findOne({ where : { role_id : mentionRole.id } });
+		}
+		else {
+			works = await Works.findAll();
+		}
 		const payed = [];
 		if (works.length > 0) {
 			works.forEach(work => {

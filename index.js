@@ -17,6 +17,7 @@ const client = new Client({
 
 client.commands = Commands;
 
+
 const commandFiles = read('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);

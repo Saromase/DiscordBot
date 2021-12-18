@@ -7,7 +7,7 @@ const {
 } = require('../../collectionInit');
 
 const {
-	Users,
+	Account,
 } = require('../../dbObjects');
 
 module.exports = {

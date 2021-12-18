@@ -1,19 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-	return sequelize.define('shops', {
-		id : {
-			type : DataTypes.UUIDV4,
-			primaryKey: true,
+	return sequelize.define('transactions', {
+		from_id : {
+			type: DataTypes.UUIDV4,
+			allowNull : false,
 		},
-		owner_id : {
+		to_id : {
 			type: DataTypes.STRING,
+			allowNull : false,
 		},
-		role_id : {
+		reason : {
 			type: DataTypes.STRING,
-		},
-		name : {
-			type: DataTypes.STRING,
-			primaryKey: true,
 			allowNull: false,
+		},
+		amount : {
+			type : DataTypes.INTEGER,
+			min: 0,
 		},
 	}, {
 		timestamps: false,

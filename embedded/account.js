@@ -2,14 +2,13 @@ const {
 	MessageEmbed,
 } = require('discord.js');
 
-module.exports = (balance, newAccount = false) => {
-	const title = newAccount ? 'New Account Created' : 'Check your account';
+module.exports = (balance) => {
 	return new MessageEmbed()
 		.setColor('#0099ff')
-		.setTitle(title)
-		.setDescription('Your current account balance')
+		.setTitle('Compte en banque')
+		.setDescription('Montant disponible actuellement')
 		.addFields({
-			name: 'Current balance',
+			name: 'Somme',
 			value: `${balance} $`,
 		});
 };
