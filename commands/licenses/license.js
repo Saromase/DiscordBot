@@ -6,48 +6,130 @@ const {
 	Licenses,
 } = require('../../dbObjects');
 
+const {
+	MessageActionRow,
+	MessageSelectMenu,
+} = require('discord.js');
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('license')
-		.setDescription('Check License for user!')
-		.addStringOption(option =>
-			option.setName('type')
-				.setDescription('License type')
-				.setRequired(true)
-				.addChoice('Permis de conduire', 'driver')
-				.addChoice('Port d\'arme', 'weapon')
-				.addChoice('Commerce', 'buziness'))
-		.addUserOption(option => option.setName('user').setDescription('User to check').setRequired(true))
-		.addStringOption(option => option.setName('subtype').setDescription('License subtype').setRequired(false)),
+		.setDescription('Vérifie si l\'utilisateur ou le commerce à une license')
+		.addMentionableOption(option => option.setName('mention').setDescription('Utilisateur ou Role pour vérifier un permis').setRequired(true)),
 	async execute(interaction) {
-		const user = interaction.options.getUser('user');
+		const mention = interaction.options.getMentionable('mention');
+		const row = new MessageActionRow()
+			.addComponents(
+				new MessageSelectMenu()
+					.setCustomId('license-type')
+					.setPlaceholder('Aucun permis selectionné')
+					.addOptions([{
+						label: 'Permis de conduire',
+						value: 'driver',
+					},
+					{
+						label: 'Permis port d\'arme',
+						value: 'weapon',
+					},
+					{
+						label: 'License commerciale',
+						value: 'business',
+					},
+					]),
+			);
 
-		const where = {
-			user_id: user.id,
-		};
-
-		const type = interaction.options.getString('type');
-
-		if (type) {
-			where.type = type;
-		}
-
-		const subtype = interaction.options.getString('subtype');
-		if (subtype) {
-			where.subtype = subtype;
-		}
-
-		const license = await Licenses.findAll({
-			where: where,
+		await interaction.reply({
+			content: 'Sélection du sous permis',
+			ephemeral: true,
+			components: [row],
 		});
 
+		const filter = i => i.customId === 'license-type' && i.user.id === interaction.user.id;
+		await interaction.channel.awaitMessageComponent({
+			filter,
+			componentType: 'SELECT_MENU',
+			time: 60000,
+		}).then(async (message) => {
+			let component;
+			const type = message?.values[0];
+			switch (type) {
+			case 'driver':
+				component = [new MessageActionRow()
+					.addComponents(
+						new MessageSelectMenu()
+							.setCustomId('license-subtype')
+							.setPlaceholder('Aucun sous type de permis selectionné')
+							.addOptions([{
+								label: 'Permis Voiture',
+								value: 'auto',
+							},
+							{
+								label: 'Permis Camion',
+								value: 'truck',
+							},
+							]),
+					),
+				];
+				break;
+			case 'weapon':
+				component = [new MessageActionRow()
+					.addComponents(
+						new MessageSelectMenu()
+							.setCustomId('license-subtype')
+							.setPlaceholder('Aucun sous type de permis selectionné')
+							.addOptions([{
+								label: 'Catégorie 1',
+								value: 'weapon-1',
+							},
+							{
+								label: 'Catégorie 2',
+								value: 'weapon-2',
+							},
+							{
+								label: 'Catégorie 3',
+								value: 'weapon-3',
+							},
+							]),
+					),
+				];
+				break;
 
-		if (license && license[0]) {
-			await interaction.reply(`User has this license since ${license[0].date}`);
-		}
-		else {
-			await interaction.reply('User doesnt has this license');
-		}
+			default:
+				component = [];
+				break;
+			}
+			message.reply({
+				content: 'Sous type du permis',
+				ephemeral: true,
+				components: component,
+			});
+
+			const subfilter = i => i.customId === 'license-subtype' && i.user.id === interaction.user.id;
+
+			await message.channel.awaitMessageComponent({
+				subfilter,
+				componentType: 'SELECT_MENU',
+				time: 60000,
+			}).then(async (submessage) => {
+				const where = {
+					target_id: mention.id,
+					type : type,
+					subtype : submessage?.values[0],
+				};
+
+				const license = await Licenses.findAll({
+					where: where,
+				});
+
+
+				if (license && license[0]) {
+					await submessage.reply({ content : `L'utilisateur ou le commerce à ce permis depuis le ${license[0].date}`, ephemeral : true });
+				}
+				else {
+					await submessage.reply({ content : 'L\'utilisateur ou le commerce n\'a pas ce permis.', ephemeral : true });
+				}
+			});
+		});
 	},
 };

@@ -1,9 +1,17 @@
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
-		const command = interaction.client.commands.get(interaction.commandName);
-
-		if (!command) return;
+		let commandName;
+		if (interaction.isButton()) {
+			return;
+		}
+		else if (interaction.commandName) {
+			commandName = interaction.commandName;
+		}
+		else {
+			return;
+		}
+		const command = interaction.client.commands.get(commandName);
 
 		try {
 			await command.execute(interaction);

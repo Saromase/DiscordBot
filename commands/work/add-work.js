@@ -28,7 +28,6 @@ module.exports = {
 			reason : 'Nouveaux métier ajouté',
 			parent : categoryChannel,
 		}).then((channel) => {
-			console.log(channel.id);
 			const message = `Le ${role} à bien était créer, le channel ${channel} associé aussi.`;
 			Works.create({
 				role_id: role.id,

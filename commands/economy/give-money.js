@@ -46,8 +46,6 @@ module.exports = {
 			});
 		}
 
-		console.log(amount, userAccount, userAccount.balance);
-
 		if (userAccount.balance >= amount) {
 			const promises = [
 				Accounts.update({
