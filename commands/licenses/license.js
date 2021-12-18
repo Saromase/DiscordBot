@@ -90,6 +90,37 @@ module.exports = {
 								label: 'Catégorie 3',
 								value: 'weapon-3',
 							},
+							{
+								label: 'Catégorie 4',
+								value: 'weapon-4',
+							},
+							]),
+					),
+				];
+				break;
+
+			case 'business':
+				component = [new MessageActionRow()
+					.addComponents(
+						new MessageSelectMenu()
+							.setCustomId('license-subtype')
+							.setPlaceholder('Aucun sous type de permis selectionné')
+							.addOptions([{
+								label: 'Inscription en tant que commerçant',
+								value: 'business',
+							},
+							{
+								label: 'Licence IV (alcool)',
+								value: 'drunk',
+							},
+							{
+								label: 'Licence Restaurant',
+								value: 'food',
+							},
+							{
+								label: 'Licence CBD',
+								value: 'weeds',
+							},
 							]),
 					),
 				];
