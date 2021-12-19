@@ -167,6 +167,7 @@ module.exports = {
 				await submessage.reply({
 					content: `Confirmer l'ajout d'un permis de ${LICENSES_TRANSLATION[type]} - ${LICENSES_TRANSLATION[subtype]} pour ${mention}`,
 					components: [button],
+					ephemeral : true,
 				});
 
 				const buttonfilter = i => i.customId === 'validated' || i.customId === 'refused' && i.user.id === interaction.user.id;
@@ -198,13 +199,14 @@ module.exports = {
 								date: new Date().toJSON(),
 							});
 							await buttonInteraction.reply({
-								content: `Ajout du permis ${LICENSES_TRANSLATION[type]} - ${LICENSES_TRANSLATION[subtype]} pour ${mention}`,
+								content: `Ajout du permis ${LICENSES_TRANSLATION[type]} - ${LICENSES_TRANSLATION[subtype]} pour ${mention} par ${buttonInteraction.user}`,
 							});
 						}
 					}
 					else {
 						await buttonInteraction.reply({
 							content: 'Annulation de l\'ajout du permis',
+							ephemeral : true,
 						});
 					}
 				});

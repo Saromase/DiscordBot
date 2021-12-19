@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
 		role_id : {
 			type: DataTypes.STRING,
 		},
+		channel_id : {
+			type: DataTypes.STRING,
+		},
 		name : {
 			type: DataTypes.STRING,
 			primaryKey: true,

@@ -13,9 +13,11 @@ module.exports = {
 		.setName('add-work')
 		.setDescription('Add new work from roles')
 		.addStringOption(option => option.setName('name').setDescription('Nom du métier').setRequired(true))
+		.addStringOption(option => option.setName('channel').setDescription('Nom du channel').setRequired(true))
 		.addIntegerOption(option => option.setName('pay').setDescription('Pay every week').setRequired(true)),
 	async execute(interaction) {
 		const name = interaction.options.getString('name');
+		const channel = interaction.options.getString('channel');
 		const pay = interaction.options.getInteger('pay');
 
 		const guild = interaction.guild;
@@ -24,14 +26,14 @@ module.exports = {
 			name : name,
 		});
 		const categoryChannel = guild.channels.cache.get(category.work);
-		await guild.channels.create(name, {
+		await guild.channels.create(channel, {
 			reason : 'Nouveaux métier ajouté',
 			parent : categoryChannel,
-		}).then((channel) => {
-			const message = `Le ${role} à bien était créer, le channel ${channel} associé aussi.`;
+		}).then((newChan) => {
+			const message = `Le ${role} à bien était créer, le channel ${newChan} associé aussi.`;
 			Works.create({
 				role_id: role.id,
-				channel_id: channel.id,
+				channel_id: newChan.id,
 				pay: pay,
 			});
 			interaction.reply({

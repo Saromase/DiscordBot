@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING,
 			allowNull : true,
 			defaultValue : null,
+			primaryKey: true,
 		},
 		date : {
 			type: DataTypes.DATE,
