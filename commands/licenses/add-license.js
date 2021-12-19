@@ -20,11 +20,32 @@ const {
 } = require('discord.js');
 
 
+const { roles } = require('../../config.json');
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.city !== '') {
+	permissions.push({
+		id: roles.city,
+		type: 1,
+		permission: true,
+	});
+}
+
+
 module.exports = {
+	permissions : permissions,
 	data: new SlashCommandBuilder()
 		.setName('add-license')
 		.setDescription('Ajoute un permis pour l\'utilisateur !')
-		.addMentionableOption(option => option.setName('mention').setDescription('Utilisateur ou Role pour ajouter un permis').setRequired(true)),
+		.addMentionableOption(option => option.setName('mention').setDescription('Utilisateur ou Role pour ajouter un permis').setRequired(true))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const mention = interaction.options.getMentionable('mention');
 		const row = new MessageActionRow()

@@ -11,12 +11,39 @@ const {
 	MessageSelectMenu,
 } = require('discord.js');
 
+const { roles } = require('../../config.json');
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.city !== '') {
+	permissions.push({
+		id: roles.city,
+		type: 1,
+		permission: true,
+	});
+}
+
+if (roles.police !== '') {
+	permissions.push({
+		id: roles.police,
+		type: 1,
+		permission: true,
+	});
+}
+
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('license')
 		.setDescription('Vérifie si l\'utilisateur ou le commerce à une license')
-		.addMentionableOption(option => option.setName('mention').setDescription('Utilisateur ou Role pour vérifier un permis').setRequired(true)),
+		.addMentionableOption(option => option.setName('mention').setDescription('Utilisateur ou Role pour vérifier un permis').setRequired(true))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const mention = interaction.options.getMentionable('mention');
 		const row = new MessageActionRow()

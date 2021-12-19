@@ -6,15 +6,34 @@ const {
 	Works,
 } = require('../../dbObjects');
 
-const { category } = require('../../config.json');
+
+const { category, roles } = require('../../config.json');
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.moderator !== '') {
+	permissions.push({
+		id: roles.moderator,
+		type: 1,
+		permission: true,
+	});
+}
 
 module.exports = {
+	permissions : permissions,
 	data: new SlashCommandBuilder()
 		.setName('add-work')
 		.setDescription('Add new work from roles')
 		.addStringOption(option => option.setName('name').setDescription('Nom du métier').setRequired(true))
 		.addStringOption(option => option.setName('channel').setDescription('Nom du channel').setRequired(true))
-		.addIntegerOption(option => option.setName('pay').setDescription('Pay every week').setRequired(true)),
+		.addIntegerOption(option => option.setName('pay').setDescription('Pay every week').setRequired(true))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const name = interaction.options.getString('name');
 		const channel = interaction.options.getString('channel');

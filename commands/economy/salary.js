@@ -8,12 +8,32 @@ const {
 
 const { Works } = require('../../dbObjects');
 
+const { roles } = require('../../config.json');
+
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.moderator !== '') {
+	permissions.push({
+		id: roles.moderator,
+		type: 1,
+		permission: true,
+	});
+}
 
 module.exports = {
+	permissions : permissions,
 	data: new SlashCommandBuilder()
 		.setName('salary')
 		.setDescription('Paye un salaire précisément, ou l\'ensemble des salaires.')
-		.addRoleOption(options => options.setDescription('Role à payer').setName('role')),
+		.addRoleOption(options => options.setDescription('Role à payer').setName('role'))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const mentionRole = interaction.options.getRole('role');
 		let works;

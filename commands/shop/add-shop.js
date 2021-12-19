@@ -6,7 +6,7 @@ const {
 	Shops,
 } = require('../../dbObjects');
 
-const { category, central_channel } = require('../../config.json');
+const { category, central_channel, roles } = require('../../config.json');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -15,20 +15,30 @@ const {
 	MessageButton,
 } = require('discord.js');
 
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.city !== '') {
+	permissions.push({
+		id: roles.city,
+		type: 1,
+		permission: true,
+	});
+}
 
 module.exports = {
-	permissions: [
-		{
-			id: '921907485491748944',
-			type: 'ROLE',
-			permission: true,
-		},
-	],
+	permissions : permissions,
 	data: new SlashCommandBuilder()
 		.setName('add-shop')
 		.setDescription('Ajoute un nouveau commerce')
 		.addStringOption(option => option.setName('name').setDescription('Nom du commerce').setRequired(true))
-		.addUserOption(option => option.setName('owner').setDescription('Propriétaire du commerce').setRequired(true)),
+		.addUserOption(option => option.setName('owner').setDescription('Propriétaire du commerce').setRequired(true))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const name = interaction.options.getString('name');
 		const user = interaction.options.getUser('owner');

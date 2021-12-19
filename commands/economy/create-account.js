@@ -13,11 +13,31 @@ const {
 
 const { USER_TYPE, ROLE_TYPE } = require('../../utils/TargetConstant');
 
+const { roles } = require('../../config.json');
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.city !== '') {
+	permissions.push({
+		id: roles.city,
+		type: 1,
+		permission: true,
+	});
+}
+
 module.exports = {
+	permissions : permissions,
 	data: new SlashCommandBuilder()
 		.setName('create-account')
 		.setDescription('Créer un nouveau compte')
-		.addMentionableOption(options => options.setDescription('Utilisateur ou role').setName('mention').setRequired(true)),
+		.addMentionableOption(options => options.setDescription('Utilisateur ou role').setName('mention').setRequired(true))
+		.setDefaultPermission(false),
 	async execute(interaction) {
 		const mention = interaction.options.getMentionable('mention');
 		const account = Account.get(mention.id);

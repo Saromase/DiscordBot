@@ -3,7 +3,7 @@ const {
 } = require('../dbObjects');
 
 module.exports = async (client) => {
-	const channel = client.channels.cache.find(channel => channel.id === '920098604474048554');
+	const channel = client.channels.cache.find(chan => chan.id === '920098604474048554');
 	channel.bulkDelete(1);
 	const works = await Works.findAll();
 	const fields = [];

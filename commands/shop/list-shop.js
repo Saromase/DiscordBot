@@ -6,7 +6,26 @@ const {
 	Shops,
 } = require('../../dbObjects');
 
+const { roles } = require('../../config.json');
+
+const permissions = [
+	{
+		id: roles.admin,
+		type: 1,
+		permission: true,
+	},
+];
+
+if (roles.city !== '') {
+	permissions.push({
+		id: roles.city,
+		type: 1,
+		permission: true,
+	});
+}
+
 module.exports = {
+	permissions: permissions,
 	data: new SlashCommandBuilder()
 		.setName('list-shop')
 		.setDescription('Liste l\'ensemble des magasins .'),
