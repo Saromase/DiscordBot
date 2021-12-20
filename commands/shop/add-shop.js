@@ -6,7 +6,7 @@ const {
 	Shops,
 } = require('../../dbObjects');
 
-const { category, central_channel, roles } = require('../../config.json');
+const { category, channel, roles } = require('../../config.json');
 
 const { v4: uuidv4 } = require('uuid');
 
@@ -93,7 +93,7 @@ module.exports = {
 					deleted : false,
 				});
 				interaction.guild.members.cache.get(user.id).roles.add(role);
-				await buttonInteraction.guild.channels.cache.get(central_channel).send({
+				await buttonInteraction.guild.channels.cache.get(channel.central).send({
 					content: message,
 				});
 				await buttonInteraction.reply({

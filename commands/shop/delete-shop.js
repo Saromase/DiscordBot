@@ -6,7 +6,7 @@ const {
 	Shops,
 } = require('../../dbObjects');
 
-const { roles, central_channel } = require('../../config.json');
+const { roles, channel } = require('../../config.json');
 
 
 const {
@@ -130,7 +130,7 @@ module.exports = {
 					const fetchedRole = interaction.guild.roles.cache.get(shop.role_id);
 					fetchedRole.delete();
 
-					await buttonInteraction.guild.channels.cache.get(central_channel).send({
+					await buttonInteraction.guild.channels.cache.get(channel.central).send({
 						content: `Fermeture du commerce "${shop.name}" tenu par <@${shop.owner_id}> `,
 					});
 

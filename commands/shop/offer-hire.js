@@ -12,8 +12,8 @@ const {
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('offer-hire')
-		.setDescription('Poste une offre d\'emploi')
+		.setName('offer')
+		.setDescription('Gestion des offres d\'emplois')
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('hire')
