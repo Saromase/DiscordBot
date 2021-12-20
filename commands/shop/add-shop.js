@@ -90,10 +90,15 @@ module.exports = {
 					role_id : role.id,
 					channel_id: newChan.id,
 					name : name,
+					deleted : false,
 				});
 				interaction.guild.members.cache.get(user.id).roles.add(role);
 				await buttonInteraction.guild.channels.cache.get(central_channel).send({
 					content: message,
+				});
+				await buttonInteraction.reply({
+					content : 'Commerce ajouté',
+					ephemeral : true,
 				});
 			}).catch((error) => {
 				console.error(error);

@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
 			primaryKey: true,
 			allowNull: false,
 		},
+		deleted : {
+			type : DataTypes.BOOLEAN,
+			default : false,
+		},
 	}, {
 		timestamps: false,
 	});

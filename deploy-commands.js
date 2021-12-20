@@ -42,7 +42,6 @@ const rest = new REST({
 				Routes.applicationCommandPermissions(clientId, guildId, current[0].id),
 				{ body: { permissions : commandP.permissions } },
 			);
-			console.log(current);
 		});
 		console.log('Successfully reloaded application (/) commands.');
 	}
