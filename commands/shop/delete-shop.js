@@ -23,18 +23,12 @@ const permissions = [
 	},
 ];
 
-const listOptions = [];
 Shops.findAll({ where : { deleted : 0 } }).then((shops) => {
 	shops.forEach((shop) => {
 		permissions.push({
 			id : shop.role_id,
 			type : 1,
 			permission : true,
-		});
-
-		listOptions.push({
-			value : shop.id,
-			label : shop.name,
 		});
 	});
 });
@@ -55,6 +49,17 @@ module.exports = {
 		.setDefaultPermission(false),
 	async execute(interaction) {
 		const user = interaction.user;
+		const listOptions = [];
+		await Shops.findAll({ where : { deleted : 0 } }).then((shops) => {
+			shops.forEach((shop) => {
+				listOptions.push({
+					value : shop.id,
+					label : shop.name,
+				});
+			});
+		});
+
+		console.log(listOptions);
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageSelectMenu()
@@ -77,7 +82,7 @@ module.exports = {
 		}).then(async (message) => {
 
 			const shop = await Shops.findOne({ where:{ id : message?.values[0] } });
-			console.log(user.roles);
+			// console.log(user.roles);
 			// if (shop.owner_id !== user.id || user.roles.has()) {
 			// }
 			const buttons = new MessageActionRow()
