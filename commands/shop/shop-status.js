@@ -13,6 +13,9 @@ const {
 	MessageSelectMenu,
 } = require('discord.js');
 
+const { channel } = require('../../config.json');
+
+
 const permissions = [
 	{
 		id: roles.admin,
@@ -77,9 +80,14 @@ module.exports = {
 		}).then(async (message) => {
 			const selectedShop = await Shops.findOne({ where: { id : message?.values[0] } });
 
-			const embed = require('../../embedded/shop-status')(message, selectedShop, subcommand);
-			await message.reply({
+			const embed = require('../../embedded/shop-status')(interaction.user, selectedShop, subcommand);
+
+			await message.guild.channels.cache.get(channel.openShop).send({
 				embeds : [embed],
+			});
+			await message.reply({
+				content : 'Ouverture du commerce',
+				ephemeral : true,
 			});
 		});
 	},

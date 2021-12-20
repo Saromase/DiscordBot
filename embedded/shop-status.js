@@ -1,9 +1,9 @@
-module.exports = (interaction, selectedShop, open) => {
+module.exports = (user, selectedShop, open) => {
 
 	if (open) {
 		return {
 			title : ':green_circle: Commerce Ouvert',
-			description : `Le commerce ${selectedShop.name} vient d'ouvrir.`,
+			description : `Ouverture de "${selectedShop.name}" par ${user}.`,
 			type : 'rich',
 			color : '#0bcf02',
 		};
