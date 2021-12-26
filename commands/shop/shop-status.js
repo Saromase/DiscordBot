@@ -57,7 +57,6 @@ module.exports = {
 			});
 		});
 
-		console.log(listOptions);
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageSelectMenu()
@@ -79,8 +78,9 @@ module.exports = {
 			time: 60000,
 		}).then(async (message) => {
 			const selectedShop = await Shops.findOne({ where: { id : message?.values[0] } });
+			const associatedRole = message.guild.roles.cache.get(selectedShop.role_id);
 
-			const embed = require('../../embedded/shop-status')(interaction.user, selectedShop, subcommand);
+			const embed = require('../../embedded/shop-status')(interaction.user, associatedRole, subcommand);
 
 			await message.guild.channels.cache.get(channel.openShop).send({
 				embeds : [embed],

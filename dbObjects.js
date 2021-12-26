@@ -15,10 +15,22 @@ const Licenses = require('./models/Licenses.js')(sequelize, Sequelize.DataTypes)
 
 const Shops = require('./models/Shops.js')(sequelize, Sequelize.DataTypes);
 
+const Offers = require('./models/Offers.js')(sequelize, Sequelize.DataTypes);
+
+const Employees = require('./models/Employees.js')(sequelize, Sequelize.DataTypes);
+
+
+Shops.hasMany(Employees, {
+	foreignKey : 'shop_id',
+});
+
+
 
 module.exports = {
 	Accounts,
 	Works,
 	Licenses,
 	Shops,
+	Offers,
+	Employees,
 };

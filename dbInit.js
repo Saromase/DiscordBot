@@ -10,7 +10,13 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const Accounts = require('./models/Accounts.js')(sequelize, Sequelize.DataTypes);
 require('./models/Works.js')(sequelize, Sequelize.DataTypes);
 require('./models/Licenses.js')(sequelize, Sequelize.DataTypes);
-require('./models/Shops.js')(sequelize, Sequelize.DataTypes);
+const Shops = require('./models/Shops.js')(sequelize, Sequelize.DataTypes);
+require('./models/Offers.js')(sequelize, Sequelize.DataTypes);
+const Employees = require('./models/Employees.js')(sequelize, Sequelize.DataTypes);
+
+Shops.hasMany(Employees, {
+	foreignKey : 'shop_id',
+});
 
 const { USER_TYPE } = require('./utils/TargetConstant');
 
