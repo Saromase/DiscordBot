@@ -1,6 +1,7 @@
 module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction) {
+		console.log(interaction.channel.id);
 		let commandName;
 		if (interaction.isButton()) {
 			return;

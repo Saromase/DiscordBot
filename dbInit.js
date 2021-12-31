@@ -18,7 +18,7 @@ Shops.hasMany(Employees, {
 	foreignKey : 'shop_id',
 });
 
-const { USER_TYPE } = require('./utils/TargetConstant');
+// const { USER_TYPE } = require('./utils/TargetConstant');
 
 // association
 // UserItems.belongsTo(CurrencyShop, { foreignKey: 'item_id', as: 'item' });
@@ -26,16 +26,16 @@ const { USER_TYPE } = require('./utils/TargetConstant');
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 
 sequelize.sync({ force }).then(async () => {
-	const accounts = [
-		Accounts.upsert({ target_id : '117405920392118277', target_type : USER_TYPE, balance : 1000 }),
-	];
+	// const accounts = [
+	// 	Accounts.upsert({ target_id : '117405920392118277', target_type : USER_TYPE, balance : 1000 }),
+	// ];
 	// const works = [
 	// 	Works.upsert({ role_id : '920015956032503858', name : 'Policier', pay : 100 }),
 	// 	Works.upsert({ role_id : '920016153672306709', name : 'Fermier', pay : 150 }),
 	// ];
 
-	await Promise.all(accounts);
+	// await Promise.all(accounts);
 
 
-	sequelize.close();
+	// sequelize.close();
 }).catch(console.error);

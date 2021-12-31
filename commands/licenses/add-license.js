@@ -30,9 +30,9 @@ const permissions = [
 	},
 ];
 
-if (roles.city !== '') {
+if (roles.government !== '') {
 	permissions.push({
-		id: roles.city,
+		id: roles.government,
 		type: 1,
 		permission: true,
 	});

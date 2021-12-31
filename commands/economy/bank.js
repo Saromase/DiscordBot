@@ -6,7 +6,12 @@ const {
 	Account,
 } = require('../../collectionInit');
 
+const {
+	configChannel,
+} = require('../../config.json');
+
 module.exports = {
+	authorizedChan : configChannel.bank,
 	data: new SlashCommandBuilder()
 		.setName('bank')
 		.setDescription('Retourne le compte de l\'utilisateur!')
