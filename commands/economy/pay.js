@@ -109,6 +109,9 @@ module.exports = {
 				if (mention.user) {
 					mention.send(`${nickname} vous à transféré ${amount}`);
 				}
+				else {
+					// Envoyé message sur le channel.
+				}
 
 			}).catch(() => {
 				console.error(`Une erreur s'est produite lors de l'envoi d'argent entre ${mention} et ${user} d'un montant de ${amount}`);
