@@ -10,18 +10,24 @@ module.exports = (sequelize, DataTypes) => {
 			allowNull : false,
 		},
 		balance: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.DECIMAL,
 			defaultValue: 0,
 			allowNull: false,
+		},
+		pocket: {
+			type: DataTypes.DECIMAL,
+			defaultValue: 0,
+			allowNull: false,
+		},
+		active: {
+			type: DataTypes.BOOLEAN,
+			defaultValue : true,
+		},
+		precision : {
+			type : DataTypes.INTEGER,
+			defaultValue : 1,
 		},
 	}, {
 		timestamps: false,
 	});
 };
-
-/**
- * | name        | type                  |
- * | target_id   | identifiant           |
- * | target_type | user | role           |
- * | balance     | montant sur le compte |
- */

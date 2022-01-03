@@ -17,12 +17,16 @@ module.exports = {
 	async execute(client) {
 		const storedBalances = await Accounts.findAll();
 		if (storedBalances.length > 0) {
-			storedBalances.forEach(b => Account.set(b.target_id, { balance : b.balance }));
+			storedBalances.forEach(async b => {
+				const devise = await b.getDevise();
+				console.log(devise);
+				Account.set(b.target_id, { balance : b.balance });
+			});
 		}
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 
 
 		// cron.schedule('* * * * *', async () => { displaySalary(client)});
-		cron.schedule('0 12,16,22 * * *', async () => { displaySalary(client);});
+		// cron.schedule('0 12,16,22 * * *', async () => { displaySalary(client);});
 	},
 };
